@@ -21,7 +21,10 @@ namespace alison_etl_api.Controllers
             Console.WriteLine("In the history controler");
             Database db = new Database();
             db.Open();
-            string query = "SELECT * FROM `alison-etl`.PipelineStatus";
+            string query = "SELECT a.Id, a.PipelineId, b.Name, a.Step, a.Status, a.TimeStamp ";
+            query += "FROM `alison-etl`.PipelineStatus a, `alison-etl`.Pipeline b ";
+            query += "WHERE a.PipelineId = b.Id ";
+            query += "ORDER BY a.TimeStamp DESC";
             List<ExpandoObject> pipelines = db.Select(query);
             db.Close();
 
@@ -36,7 +39,10 @@ namespace alison_etl_api.Controllers
             Console.WriteLine("In the history controler");
             Database db = new Database();
             db.Open();
-            string query = "SELECT * FROM `alison-etl`.PipelineStatus where PipelineId = @id";
+            string query = "SELECT a.Id, a.PipelineId, b.Name, a.Step, a.Status, a.TimeStamp ";
+            query += "FROM `alison-etl`.PipelineStatus a, `alison-etl`.Pipeline b ";
+            query += "WHERE a.PipelineId = @id and a.PipelineId = b.Id ";
+            query += "ORDER BY a.TimeStamp DESC";
             var values = new Dictionary<string, object>()
                 {
                     {"@id", id},
