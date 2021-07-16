@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Dynamic;
 using Microsoft.AspNetCore.Cors;
+using alison_etl_api.Models;
 
 namespace alison_etl_api.Controllers
 {
@@ -56,9 +57,8 @@ namespace alison_etl_api.Controllers
         // PUT: api/Pipeline/5
         [EnableCors("OpenPolicy")]
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] dynamic pipeline)
+        public void Put(int id, [FromBody] Pipeline pipeline)
         {
-            Console.WriteLine("Made it to the put");
             try
             {
                 Database db = new Database();
@@ -72,8 +72,8 @@ namespace alison_etl_api.Controllers
                 var values = new Dictionary<string, object>()
                 {
                     {"@id", id},
-                    // {"@Status", pipeline.status},
-                    // {"@ScheduledMinutes", pipeline.scheduledMinutes}
+                    {"@Status", pipeline.Status},
+                    {"@ScheduledMinutes", pipeline.ScheduledMinutes}
                 };
 
                 db.Update(updateQuery, values);
@@ -86,8 +86,8 @@ namespace alison_etl_api.Controllers
                 var insertValues = new Dictionary<string, object>()
                 {
                     {"@PipelineId", id},
-                    // {"@Status", pipeline.status},
-                    // {"@ScheduledMinutes", pipeline.scheduledMinutes}
+                    {"@Status", pipeline.Status},
+                    {"@ScheduledMinutes", pipeline.ScheduledMinutes}
                 };
 
                 db.Insert(insertQuery, insertValues);
