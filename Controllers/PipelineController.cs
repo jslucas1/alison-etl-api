@@ -57,7 +57,7 @@ namespace alison_etl_api.Controllers
         // PUT: api/Pipeline/5
         [EnableCors("OpenPolicy")]
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Pipeline pipeline)
+        public ExpandoObject Put(int id, [FromBody] Pipeline pipeline)
         {
             try
             {
@@ -94,11 +94,21 @@ namespace alison_etl_api.Controllers
                 //return CreatedAtAction();
 
                 db.Close();
+                dynamic responseVar = new ExpandoObject();
+                responseVar.id = id;
+                responseVar.status = pipeline.Status;
+                responseVar.scheduledMinutes = pipeline.ScheduledMinutes;
+                responseVar.success = true;
+
+                return responseVar;
             }
             catch
             {
                 Console.WriteLine("Something went wrong in the put");
-                //return BadRequest();
+                dynamic responseVar = new ExpandoObject();
+                responseVar.success = false;
+
+                return responseVar;
 
             }
 
